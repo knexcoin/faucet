@@ -1,0 +1,31 @@
+name = "knexcoin-faucet"
+main = "src/worker.js"
+compatibility_date = "2024-01-01"
+
+# Custom domain: faucet.knexcoins.com
+routes = [
+  { pattern = "faucet.knexcoins.com/*", zone_name = "knexcoins.com" }
+]
+
+# KV Namespaces for rate limiting
+[[kv_namespaces]]
+binding = "RATE_LIMITS"
+id = "7e9cab4050d24bbb813dcaa634b7b827"
+
+[[kv_namespaces]]
+binding = "CLAIMS"
+id = "9de6a0b2a3634f4a90d5e2ffadc21472"
+
+# Environment variables (set via wrangler secret)
+# TURNSTILE_SECRET - Cloudflare Turnstile secret key
+# FAUCET_PRIVATE_KEY - Ed25519 private key for faucet wallet
+# FAUCET_ADDRESS - Faucet wallet address (knex1...)
+# NODE_RPC_URL - KnexCoin node RPC endpoint
+
+[vars]
+FAUCET_AMOUNT = "10000"           # 10,000 KNEX per claim (in raw: 100000000000)
+DAILY_LIMIT_PER_ADDRESS = "1"     # 1 claim per address per 24h
+HOURLY_LIMIT_PER_IP = "10"        # 10 claims per IP per hour
+ENVIRONMENT = "production"
+# Set your Turnstile site key here (public, safe to commit)
+TURNSTILE_SITE_KEY = "0x4AAAAAACWm7Y_8QlUjotqQ"
